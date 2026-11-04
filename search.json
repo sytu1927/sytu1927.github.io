@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "I’m a full-stack ML engineer with experience shipping production ML systems. I specialize in bridging complex ML models with real-world user needs.\nOver the last 8+ years I’ve shipped production ML across very different settings: multi-node LLM inference and serving runtimes in the cloud, real-time ML systems for insurance, deep learning models on overhead aerial imagery, and user-facing NLP, computer vision, and AutoML tools used by non-technical people.\nThe thread through all of it is making complicated systems understandable. I’ve given talks at Alteryx Inspire and Data Connect West, built visualizations that explain model behavior to non-experts, and automated documentation so it stays accurate.\nWhat I write about here: LLM serving, agentic workflows, and other AI topics explained for application engineers, platform teams, and technical PMs building agents and apps on top of it.\nViews are my own and don’t represent my employer."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Sydney Firmin",
+    "section": "",
+    "text": "No matching items"
+  }
+]
