@@ -1,0 +1,26 @@
+project:
+  type: website
+
+website:
+  title: "Sydney Firmin"
+  description: "LLM serving, explained for the people building on top of it."
+  site-url: https://YOUR-GITHUB-USERNAME.github.io
+  navbar:
+    right:
+      - about.qmd
+      - icon: github
+        href: https://github.com/YOUR-GITHUB-USERNAME
+      - icon: linkedin
+        href: https://www.linkedin.com/in/YOUR-LINKEDIN-HANDLE
+      - icon: rss
+        href: index.xml
+
+format:
+  html:
+    theme:
+      light: flatly
+      dark: darkly
+    css: styles.css
+    toc: true
+    code-copy: true
+    code-overflow: wrap

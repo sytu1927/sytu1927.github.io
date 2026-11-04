@@ -1,0 +1,35 @@
+---
+title: "About"
+image: profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: github
+      text: GitHub
+      href: https://github.com/YOUR-GITHUB-USERNAME
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/YOUR-LINKEDIN-HANDLE
+    - icon: envelope
+      text: Email
+      href: mailto:smfirmin@gmail.com
+---
+
+I'm a machine learning engineer who works on LLM serving: the systems that take a
+trained model and turn it into something fast, affordable, and reliable enough to
+build products on.
+
+Over the last 8+ years I've shipped production ML across very different settings:
+multi-node LLM inference and serving runtimes in the cloud, real-time ML systems for
+insurance, deep learning models on aerial imagery, and user-facing NLP, computer
+vision, and AutoML tools used by non-technical people.
+
+The thread through all of it is making complicated systems understandable. I've given
+talks at Alteryx Inspire and Data Connect West, built visualizations that explain
+model behavior to non-experts, and automated documentation so it stays accurate.
+
+**What I write about here:** how LLM serving actually works, explained for
+application engineers, platform teams, and technical PMs building agents and apps on
+top of it, with a focus on the decisions that change latency and cost.
+
+*Views are my own and don't represent my employer.*

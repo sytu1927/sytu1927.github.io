@@ -1,0 +1,45 @@
+---
+title: "How LLM serving works: a map for people building on top of it"
+description: "The life of a request, from your API call to the last streamed token, and where latency and cost come from."
+date: "2026-11-15"
+categories: [llm-serving, fundamentals]
+draft: true
+---
+
+<!-- DRAFT: `draft: true` keeps this off the live site. Delete that line to publish. -->
+
+## Why this post exists
+
+<!-- 2-3 sentences: who this is for (people building agents/apps),
+and the promise: by the end you can reason about why a request is slow or expensive. -->
+
+## The life of a request
+
+<!-- One diagram goes here. Keep each stage to a short paragraph. -->
+
+1. **Tokenize** — text becomes tokens.
+2. **Route** — a router picks which server/GPU handles the request.
+3. **Queue and batch** — the request waits, then joins a batch with others.
+4. **Prefill** — the model reads the whole prompt at once and builds the KV cache.
+5. **Decode** — the model generates output one token at a time.
+6. **Stream** — tokens come back to you as they're produced.
+
+## The two numbers that matter: time to first token and tokens per second
+
+<!-- Prefill mostly drives time to first token; decode drives tokens/sec.
+This is the single most useful mental model in the post. -->
+
+## The KV cache: the model's working memory
+
+<!-- What it is in plain language, why it's reused, why it eats GPU memory. -->
+
+## Where it gets harder (each becomes a future post)
+
+- Routing and cache-aware scheduling
+- Agent workloads: why cost grows every turn
+- Splitting prefill and decode across GPUs
+- Serving giant mixture-of-experts models across nodes
+
+## Further reading
+
+<!-- Link the vLLM docs/blog and 2-3 explainers you think are best. -->

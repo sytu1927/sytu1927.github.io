@@ -1,0 +1,4 @@
+# Options applied to every post
+freeze: true
+title-block-banner: true
+author: "Sydney Firmin"
