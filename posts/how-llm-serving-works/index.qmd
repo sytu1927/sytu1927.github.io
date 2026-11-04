@@ -1,6 +1,6 @@
 ---
-title: "How LLM serving works: a map for people building on top of it"
-description: "The life of a request, from your API call to the last streamed token, and where latency and cost come from."
+title: "LLM Serving; A Field Guide"
+description: "The life of a request."
 date: "2026-11-15"
 categories: [llm-serving, fundamentals]
 draft: true
@@ -14,8 +14,6 @@ draft: true
 and the promise: by the end you can reason about why a request is slow or expensive. -->
 
 ## The life of a request
-
-<!-- One diagram goes here. Keep each stage to a short paragraph. -->
 
 1. **Tokenize** — text becomes tokens.
 2. **Route** — a router picks which server/GPU handles the request.

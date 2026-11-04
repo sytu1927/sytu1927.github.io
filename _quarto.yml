@@ -3,15 +3,15 @@ project:
 
 website:
   title: "Sydney Firmin"
-  description: "LLM serving, explained for the people building on top of it."
-  site-url: https://YOUR-GITHUB-USERNAME.github.io
+  description: "LLMs, explained for the people building on top of it."
+  site-url: https://sytu1927.github.io
   navbar:
     right:
       - about.qmd
       - icon: github
-        href: https://github.com/YOUR-GITHUB-USERNAME
+        href: https://github.com/sytu1927
       - icon: linkedin
-        href: https://www.linkedin.com/in/YOUR-LINKEDIN-HANDLE
+        href: https://www.linkedin.com/in/sydney-t-4369a65b/
       - icon: rss
         href: index.xml
 

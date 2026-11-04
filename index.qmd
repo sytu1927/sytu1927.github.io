@@ -1,6 +1,6 @@
 ---
 title: "Sydney Firmin"
-subtitle: "LLM serving, explained for the people building on top of it."
+subtitle: "LLMs, explained for the people building on top of it."
 listing:
   contents: posts
   sort: "date desc"
