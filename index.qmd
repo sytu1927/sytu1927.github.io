@@ -1,6 +1,6 @@
 ---
-title: "Sydney Firmin"
-subtitle: "LLMs, explained for the people building on top of it."
+title: "The Blog"
+subtitle: "Where I think through things and write my notes in public."
 listing:
   contents: posts
   sort: "date desc"

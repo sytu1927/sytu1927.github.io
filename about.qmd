@@ -24,6 +24,6 @@ The thread through all of it is making complicated systems understandable. I've 
 talks at Alteryx Inspire and Data Connect West, built visualizations that explain
 model behavior to non-experts, and automated documentation so it stays accurate.
 
-**What I write about here:** LLM serving, agentic workflows, and other AI topics explained for application engineers, platform teams, and technical PMs building agents and apps on top of it.
+**What I write about here:** I had a philosophy teacher in highschool, and some of his thoughts still seem to live rent free in my mind. One of the things is that the word essay comes from the french word "essai," meaning "attempt" or "trial". We don't ask highschool students to write essays about the Great Gatsby because we are really excited to read another essay on the trappings of wealth and the folly of the American Dream. For me, writing is about the process. I learn better when I write, and I hope that by sharing my attempts to understand LLM serving, agentic workflows, and other AI topics, I can help others learn too.  
 
 *Views are my own and don't represent my employer.*

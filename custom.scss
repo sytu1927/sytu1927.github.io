@@ -1,0 +1,91 @@
+/*-- scss:defaults --*/
+
+// One-accent system: warm white · near-black · periwinkle personality
+// #BCB4FF is the visual accent (fills, pills); #6060C8 for legible text links
+$accent-light:    #BCB4FF;   // periwinkle — figure fills, pills, decorative
+$accent:          #6060C8;   // darker periwinkle — links, code, text uses
+$accent-dark:     #4848A8;   // hover state
+$body-bg:         #FEFCF8;   // near-white with warmth
+$body-color:      #1C1410;   // near-black with warmth
+$secondary-text:  #7A6050;   // muted warm grey
+
+// Visualization highlight palette (use in SVG figures, not in prose)
+// $viz-peach:    #FFBe98;   // warm peach highlight
+// $viz-lemon:    #E9FC87;   // lemon yellow highlight
+// $viz-grey-bg:  #E6E6F0;   // cool grey — unreachable plot area
+// $viz-grey-border: #CCCCD8; // cool grey — borders, grid lines
+// $viz-card-bg:  #F0F0F8;   // cool off-white — card/input fills
+
+$primary:           $accent;
+$link-color:        $accent;
+$link-hover-color:  $accent-dark;
+$headings-color:    $body-color;
+$font-size-base:    1rem;
+
+/*-- scss:rules --*/
+
+// ── Navbar ─────────────────────────────────────────────────────────────────
+.navbar {
+  background-color: #1C1410 !important;
+  border-bottom: none;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active {
+  color: $accent-light !important;
+  opacity: 1 !important;
+}
+
+.navbar-brand:hover {
+  color: $accent-light !important;
+}
+
+// ── Headings ───────────────────────────────────────────────────────────────
+h2 {
+  padding-bottom: 0.25rem;
+  border-bottom: 2px solid rgba(188, 180, 255, 0.3);
+  margin-top: 2rem;
+}
+
+// ── TOC sidebar ────────────────────────────────────────────────────────────
+#TOC a {
+  color: #7A6050;
+}
+
+#TOC a:hover,
+#TOC a.active {
+  color: $accent;
+}
+
+// ── Figure captions ────────────────────────────────────────────────────────
+figcaption, .figure-caption {
+  color: #7A6050;
+  font-size: 0.84rem;
+  font-style: italic;
+  margin-top: 0.4rem;
+}
+
+// ── Inline code ────────────────────────────────────────────────────────────
+
+code:not(.sourceCode) {
+  background-color: #F0EFFB;
+  color: $accent;
+  padding: 0.1em 0.35em;
+  border-radius: 3px;
+  font-size: 0.88em;
+}
+
+// ── Selection highlight ─────────────────────────────────────────────────────
+::selection {
+  background-color: rgba(188, 180, 255, 0.25);
+}
+
+// ── Post listing ────────────────────────────────────────────────────────────
+.quarto-post .thumbnail img {
+  border-radius: 6px;
+}
+
+.listing-category {
+  color: $accent !important;
+  border-color: rgba(188, 180, 255, 0.4) !important;
+}

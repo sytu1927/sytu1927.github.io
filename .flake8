@@ -1,0 +1,3 @@
+[flake8]
+# SVG-generating scripts have inherently long attribute strings.
+max-line-length = 120

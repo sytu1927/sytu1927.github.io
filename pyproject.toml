@@ -1,0 +1,11 @@
+[build-system]
+requires = ["setuptools>=42"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "viz"
+version = "0.1.0"
+description = "Blog visualization library"
+
+[tool.setuptools.packages.find]
+include = ["viz*"]

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 250" style="width:100%;max-width:650px;display:block;margin:0 auto;font-family:Georgia,serif;">
+  <rect x="0" y="0" width="480" height="250" fill="#FEFCF8" rx="8" stroke="#CCCCD8" stroke-width="1"/>
+  <rect x="143" y="5" width="174" height="18" rx="9" fill="#BCB4FF"/>
+  <text x="230" y="17" text-anchor="middle" font-size="10.5" font-weight="bold" fill="#1C1410">polynomial regression</text>
+  <rect x="52" y="28" width="378" height="182" fill="#E6E6F0" rx="2"/>
+  <line x1="115" y1="28" x2="115" y2="210" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="178" y1="28" x2="178" y2="210" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="241" y1="28" x2="241" y2="210" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="304" y1="28" x2="304" y2="210" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="367" y1="28" x2="367" y2="210" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="52" y1="64" x2="430" y2="64" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="52" y1="101" x2="430" y2="101" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="52" y1="137" x2="430" y2="137" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <line x1="52" y1="174" x2="430" y2="174" stroke="#CCCCD8" stroke-width="0.7" opacity="0.7"/>
+  <polygon points="52,176 150,132 260,83 430,30 430,68 260,143 150,172 52,210" fill="#BCB4FF" fill-opacity="0.55" stroke="#BCB4FF" stroke-width="1.5" stroke-opacity="0.8" stroke-linejoin="round"/>
+  <circle cx="241" cy="130" r="5.5" fill="#6060C8" stroke="#FEFCF8" stroke-width="2"/>
+  <line x1="52" y1="210" x2="436" y2="210" stroke="#1C1410" stroke-width="1.5" opacity="0.35"/>
+  <polygon points="438,210 431,206 431,214" fill="#1C1410" opacity="0.35"/>
+  <text x="444" y="214" font-size="10" fill="#1C1410" opacity="0.35" font-style="italic">input</text>
+  <line x1="52" y1="210" x2="52" y2="22" stroke="#1C1410" stroke-width="1.5" opacity="0.35"/>
+  <polygon points="52,20 48,28 56,28" fill="#1C1410" opacity="0.35"/>
+  <text x="54" y="17" font-size="10" fill="#1C1410" opacity="0.35" font-style="italic">output</text>
+  <text x="168" y="118" text-anchor="start" font-size="9" fill="#6060C8" font-style="italic" font-weight="bold">reachable region</text>
+  <text x="88" y="52" text-anchor="start" font-size="9" fill="#B0988A" font-style="italic">unreachable</text>
+  <text x="285" y="202" text-anchor="start" font-size="9" fill="#B0988A" font-style="italic">unreachable</text>
+</svg>
