@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sydney Tucker">
+<meta name="dcterms.date" content="2026-11-05">
+<meta name="description" content="Like, what are its physical attributes? An overview of the components that make up a foundation model, through the lens of statistical ML models.">
+
+<title>Foundation Models; the components – Sydney Tucker</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-f7b62e2c45b4013a9a3645492e59bf21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../site_libs/bootstrap/bootstrap-dark-7352fee0c2918b4305a30002ea103b65.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../site_libs/bootstrap/bootstrap-f7b62e2c45b4013a9a3645492e59bf21.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          toggle.setAttribute("aria-checked", alternate ? "true" : "false");
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455).
+    // Not run on load: stylesheets are set before first paint there, and
+    // scrolling would undo the scroll to a URL fragment (#14973).
+    // The one pixel nudge keeps the reader where they were.
+    const refreshSafariScrollbar = () => {
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        const scrollY = window.scrollY;
+        window.scrollTo(0, scrollY > 0 ? scrollY - 1 : 1);
+        setTimeout(() => {
+          window.scrollTo(0, scrollY);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      refreshSafariScrollbar();
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Sydney Tucker</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/sytu1927"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/sydney-t-4369a65b/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../index.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <button type="button" role="switch" aria-checked="false" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode" aria-label="Toggle dark mode"><i class="bi"></i></button>
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title">Foundation Models; the components</h1>
+                  <div>
+        <div class="description">
+          Like, what are its physical attributes? An overview of the components that make up a foundation model, through the lens of statistical ML models.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">foundation-models</div>
+                <div class="quarto-category">fundamentals</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Author</div>
+      <div class="quarto-title-meta-contents">
+               <p>Sydney Tucker </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">November 5, 2026</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" aria-labelledby="toc-title" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#why-this-post-exists" id="toc-why-this-post-exists" class="nav-link active" data-scroll-target="#why-this-post-exists">Why this post exists</a></li>
+  <li><a href="#what-is-a-model" id="toc-what-is-a-model" class="nav-link" data-scroll-target="#what-is-a-model">What is a model?</a></li>
+  <li><a href="#the-components-of-a-foundation-model" id="toc-the-components-of-a-foundation-model" class="nav-link" data-scroll-target="#the-components-of-a-foundation-model">The components of a foundation model</a></li>
+  <li><a href="#the-executable-model-in-memory" id="toc-the-executable-model-in-memory" class="nav-link" data-scroll-target="#the-executable-model-in-memory">The Executable Model in Memory</a></li>
+  <li><a href="#what-gets-loaded-into-gpu-memory" id="toc-what-gets-loaded-into-gpu-memory" class="nav-link" data-scroll-target="#what-gets-loaded-into-gpu-memory">What gets Loaded into GPU Memory?</a></li>
+  <li><a href="#further-reading" id="toc-further-reading" class="nav-link" data-scroll-target="#further-reading">Further reading</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content" tabindex="-1">
+
+
+
+
+
+
+<section id="why-this-post-exists" class="level2">
+<h2 class="anchored" data-anchor-id="why-this-post-exists">Why this post exists</h2>
+<p>When people talk about foundation models, they often mean the model weights themselves. But a model is more than just weights; This post explains what each of those components are and why they matter.</p>
+</section>
+<section id="what-is-a-model" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-a-model">What is a model?</h2>
+<p>Models are an abstraction of a process. I <a href="https://www.kdnuggets.com/2019/06/all-models-are-wrong.html">wrote a blog about 7 years ago</a> (which is so old it has lost its images, yikes) centered around the George Box quote “Essentially, all models are wrong, but some are useful” that I think captures this concept pretty well.</p>
+<p>Models are not the thing themselves; they are a representation. I like starting here because it grounds us in the idea that a model is a representation — and for machine learning models, this is captured as a mathematical function and a set of weights (numbers) that best approximate the underlying relationship between input and output.</p>
+<p>In its most simple form, a model can be represented by a function (a mathematical equation) that takes an input and produces an output. For example, a linear regression model can be represented by the equation:</p>
+<p><span class="math display">\[ y = \beta_0 + \beta_1 x_1 \]</span></p>
+<p>The model’s weights (the <span class="math inline">\(\beta\)</span> values, also known as coefficients) are learned from data, and they determine how the input features (<span class="math inline">\(x\)</span> values) are combined to produce the output (<span class="math inline">\(y\)</span> value). So when we “ship” a linear regression, we are shipping the function and the learned weights, which together define the model’s behavior.</p>
+<figure style="text-align: center; margin: 2rem auto;" class="figure">
+  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 650 165" width="650" height="165" style="max-width: 100%; font-family: Georgia, serif;">
+
+    <!-- Panel 1: Weights -->
+    <rect x="8" y="18" width="180" height="130" rx="8" fill="#FDF6EC" stroke="#2D2013" stroke-width="1.8"></rect>
+    <rect x="52" y="25" width="92" height="22" rx="11" fill="#8B5E3C"></rect>
+    <text x="98" y="41" text-anchor="middle" font-size="12" font-weight="bold" fill="#FDF6EC">weights</text>
+    <rect x="24" y="58" width="148" height="58" rx="5" fill="#F5EDE0" stroke="#D4C4B0" stroke-width="1"></rect>
+    <text x="98" y="82" text-anchor="middle" font-size="14" fill="#2D2013" font-family="monospace">β₀ = 2.4</text>
+    <text x="98" y="103" text-anchor="middle" font-size="14" fill="#2D2013" font-family="monospace">β₁ = 0.8</text>
+    <text x="98" y="136" text-anchor="middle" font-size="10" fill="#9C8E82" font-style="italic">numbers we learned</text>
+
+    <!-- Operator + -->
+    <text x="203" y="92" text-anchor="middle" font-size="26" fill="#2D2013" font-weight="bold">+</text>
+
+    <!-- Panel 2: Architecture -->
+    <rect x="218" y="18" width="210" height="130" rx="8" fill="#FDF6EC" stroke="#2D2013" stroke-width="1.8"></rect>
+    <rect x="257" y="25" width="132" height="22" rx="11" fill="#6B6060"></rect>
+    <text x="323" y="41" text-anchor="middle" font-size="12" font-weight="bold" fill="#FDF6EC">architecture</text>
+    <text x="323" y="90" text-anchor="middle" font-size="20" fill="#2D2013" font-family="Georgia, serif">y = β₀ + β₁x</text>
+    <text x="323" y="113" text-anchor="middle" font-size="10" fill="#9C8E82" font-style="italic">the equation’s shape</text>
+    <text x="323" y="134" text-anchor="middle" font-size="9" fill="#C4B8AA" font-family="monospace">(slots for the weights)</text>
+
+    <!-- Operator = -->
+    <text x="443" y="92" text-anchor="middle" font-size="26" fill="#2D2013" font-weight="bold">=</text>
+
+    <!-- Panel 3: Model -->
+    <rect x="458" y="18" width="184" height="130" rx="8" fill="#EAF8F5" stroke="#0E9B8A" stroke-width="2"></rect>
+    <rect x="502" y="25" width="96" height="22" rx="11" fill="#0E9B8A"></rect>
+    <text x="550" y="41" text-anchor="middle" font-size="12" font-weight="bold" fill="#FDF6EC">model</text>
+    <text x="550" y="88" text-anchor="middle" font-size="18" fill="#0E9B8A" font-family="Georgia, serif">y = 2.4 + 0.8x</text>
+    <text x="550" y="111" text-anchor="middle" font-size="10" fill="#7a8a95" font-style="italic">ready to predict</text>
+    <text x="550" y="134" text-anchor="middle" font-size="9" fill="#A8DFDA" font-family="monospace">linear regression</text>
+  </svg>
+  <figcaption style="font-size: 0.85rem; color: #8C7B6B; margin-top: 0.5rem; font-style: italic;">
+    A linear regression model is the architecture (the equation's shape) plus the weights (the specific numbers). A shipped model requires both.
+  </figcaption>
+</figure>
+<p>The mathematical functions attempt to capture the transformation from input to output by making assumptions about the shape of the transformation and the relationships between variables. We then “learn” the optimal values for these parameters from data, using patterns in the data to “fit” the model.</p>
+</section>
+<section id="the-components-of-a-foundation-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-components-of-a-foundation-model">The components of a foundation model</h2>
+<p>Like a linear regression, a foundation model is a package, not a single thing. It contains several components that work together to process input and generate output. When you “ship” a foundation model, you are shipping all of these components together, which together define the model’s behavior. You can see all of these components in the <a href="https://huggingface.co/mistralai/Mistral-Large-4-1T-A52B/tree/main">Mistral-Large-4-1T-A52B model card</a>.</p>
+<p>The two main components are the weights, which are the learned parameters of the model, and the architecture, which defines how the model processes information. The weights are like the coefficients in a linear regression, while the architecture is like the structure of the equation itself.</p>
+<ul>
+<li><p><strong>Architecture:</strong> The structure of the model, which defines how information flows through the model and how the weights are applied. This includes the number of layers, the types of layers (e.g., attention, feedforward), and how they are connected. This is typically stored in a JSON format. The file extension for the architecture is typically <code>.json</code>.</p></li>
+<li><p><strong>Weights:</strong> The learned parameters of the model that capture the relationships between input and output. These are split across many files, each containing a portion of the model’s parameters. The file extensions are typically <code>.bin</code>, <code>.pt</code>, or <code>.safetensors</code>, depending on the framework used to train the model (e.g., PyTorch, TensorFlow).</p></li>
+</ul>
+<figure style="text-align: center; margin: 2rem auto;" class="figure">
+  <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 650 185" width="650" height="185" style="max-width: 100%; font-family: Georgia, serif;">
+
+    <!-- Panel 1: Tensor Weights -->
+    <rect x="8" y="18" width="180" height="150" rx="8" fill="#FDF6EC" stroke="#2D2013" stroke-width="1.8"></rect>
+    <rect x="34" y="25" width="120" height="22" rx="11" fill="#8B5E3C"></rect>
+    <text x="94" y="41" text-anchor="middle" font-size="12" font-weight="bold" fill="#FDF6EC">tensor weights</text>
+    <rect x="20" y="62" width="138" height="18" rx="3" fill="#F0E6D8" stroke="#C4A882" stroke-width="0.8"></rect>
+    <rect x="20" y="58" width="138" height="18" rx="3" fill="#F5EDE0" stroke="#C8AD8C" stroke-width="0.8"></rect>
+    <rect x="20" y="54" width="138" height="18" rx="3" fill="#FDF6EC" stroke="#2D2013" stroke-width="1.2"></rect>
+    <text x="89" y="67" text-anchor="middle" font-size="8.5" fill="#6B5A42" font-family="monospace">model.safetensors</text>
+    <text x="89" y="90" text-anchor="middle" font-size="10" fill="#9C8E82">× 52 billion numbers</text>
+    <text x="89" y="107" text-anchor="middle" font-size="9" fill="#B8AFAA" font-style="italic">one per connection</text>
+    <text x="94" y="154" text-anchor="middle" font-size="10" fill="#9C8E82" font-style="italic">what was learned</text>
+
+    <!-- Operator + -->
+    <text x="203" y="102" text-anchor="middle" font-size="26" fill="#2D2013" font-weight="bold">+</text>
+
+    <!-- Panel 2: Architecture -->
+    <rect x="218" y="18" width="210" height="150" rx="8" fill="#FDF6EC" stroke="#2D2013" stroke-width="1.8"></rect>
+    <rect x="257" y="25" width="132" height="22" rx="11" fill="#6B6060"></rect>
+    <text x="323" y="41" text-anchor="middle" font-size="12" font-weight="bold" fill="#FDF6EC">architecture</text>
+    <rect x="238" y="58" width="170" height="22" rx="4" fill="#D8EEF5" stroke="#5B9AB5" stroke-width="1.2"></rect>
+    <text x="323" y="73" text-anchor="middle" font-size="10" fill="#2D4A5A" font-family="monospace">attention layer</text>
+    <rect x="238" y="84" width="170" height="22" rx="4" fill="#D8EEF5" stroke="#5B9AB5" stroke-width="1.2"></rect>
+    <text x="323" y="99" text-anchor="middle" font-size="10" fill="#2D4A5A" font-family="monospace">feedforward layer</text>
+    <text x="323" y="124" text-anchor="middle" font-size="10" fill="#9C8E82" font-style="italic">× N layers</text>
+    <text x="323" y="154" text-anchor="middle" font-size="10" fill="#9C8E82" font-style="italic">how to process</text>
+
+    <!-- Operator = -->
+    <text x="443" y="102" text-anchor="middle" font-size="26" fill="#2D2013" font-weight="bold">=</text>
+
+    <!-- Panel 3: Foundation Model -->
+    <rect x="458" y="18" width="184" height="150" rx="8" fill="#EAF8F5" stroke="#0E9B8A" stroke-width="2"></rect>
+    <rect x="472" y="25" width="156" height="22" rx="11" fill="#0E9B8A"></rect>
+    <text x="550" y="41" text-anchor="middle" font-size="12" font-weight="bold" fill="#FDF6EC">foundation model</text>
+    <text x="550" y="70" text-anchor="middle" font-size="9.5" fill="#6B5A42" font-family="monospace">“tell me a joke”</text>
+    <line x1="550" y1="76" x2="550" y2="93" stroke="#0E9B8A" stroke-width="2"></line>
+    <polygon points="544,90 556,90 550,97" fill="#0E9B8A"></polygon>
+    <rect x="508" y="99" width="84" height="22" rx="5" fill="#0E9B8A"></rect>
+    <text x="550" y="114" text-anchor="middle" font-size="11" fill="#FDF6EC" font-weight="bold">generate</text>
+    <line x1="550" y1="122" x2="550" y2="136" stroke="#0E9B8A" stroke-width="2"></line>
+    <polygon points="544,133 556,133 550,140" fill="#0E9B8A"></polygon>
+    <text x="550" y="154" text-anchor="middle" font-size="9.5" fill="#0E9B8A" font-family="monospace">“Why did the…”</text>
+  </svg>
+  <figcaption style="font-size: 0.85rem; color: #8C7B6B; margin-top: 0.5rem; font-style: italic;">
+    A foundation model is the same: an architecture (transformer blocks) and weights (billions of numbers). The architecture defines how to process the input; the weights encode what was learned.
+  </figcaption>
+</figure>
+<p>Because foundation models are complex, they also contain additional components that help manage the model’s behavior and performance. These include a configuration file that specifies hyperparameters and other settings for the model, and a tokenizer that converts input text into a format that the model can process.</p>
+<ul>
+<li><p><strong>Configuration file(s):</strong> A file that specifies hyperparameters and other settings for the model. This is typically stored in a JSON format and contains information such as the model’s vocabulary size, maximum sequence length, and other hyperparameters that affect how the model processes input.</p></li>
+<li><p><strong>Tokenizer:</strong> A component that converts input text into tokens — pieces of text that have been converted into numerical representations the model can understand. The tokenizer converts input text into tokens and converts the model’s output tokens back into human-readable text. It is an essential component, as it bridges human language and the model’s numerical world.</p></li>
+</ul>
+</section>
+<section id="the-executable-model-in-memory" class="level2">
+<h2 class="anchored" data-anchor-id="the-executable-model-in-memory">The Executable Model in Memory</h2>
+<p>A Runtime Loader assembles these components into an executable model in memory, which can then be used to process input and generate output. The assembly work includes parsing the metadata, loading the weights into memory, applying the configuration settings, and preparing the model for inference. The loader also handles any necessary preprocessing of the input data, such as tokenization, and postprocessing of the output data, such as detokenization.</p>
+<figure style="text-align: center; margin: 1.5rem auto;" class="figure">
+  <img src="https://i.imgur.com/9cQRpAM.gif" alt="Form Voltron! The model components assemble into a live executable model." style="max-width: 480px; width: 100%; border-radius: 8px;" class="figure-img">
+  <figcaption style="font-size: 0.85rem; color: #8C7B6B; margin-top: 0.5rem; font-style: italic;">
+    Weights loaded. Config applied. Tokenizer attached. Forward pass ready. Form Voltron.
+  </figcaption>
+</figure>
+<p>When a model is loaded into memory, it becomes an executable model. This means that the model’s weights and architecture are loaded into RAM, allowing it to process input and generate output. The executable model is what the serving runtime interacts with when it receives a request to generate output.</p>
+</section>
+<section id="what-gets-loaded-into-gpu-memory" class="level2">
+<h2 class="anchored" data-anchor-id="what-gets-loaded-into-gpu-memory">What gets Loaded into GPU Memory?</h2>
+<p>When a model is loaded into GPU memory, the weights and architecture are loaded into the GPU’s RAM, allowing it to process input and generate output. The executable model is what the serving runtime interacts with when it receives a request to generate output.</p>
+<p>Weights are static once loaded — quantization and sharding change the footprint of the weights, but they are not changed during inference. The architecture is also static once loaded, as it defines how the model processes information and applies the weights.</p>
+<p>KV Cache -&gt; pressure in concurrency, long prompts and long generation</p>
+<p>Temporary workspace is activations, attention GEMM buffers during execution. This is where the model stores intermediate results and temporary data during inference. The workspace is allocated in GPU memory and is used to store activations, attention matrices, and other temporary data that is needed for the model to process input and generate output. The size of the workspace can vary depending on the model architecture, the input size, and the batch size.</p>
+<p>Overhead is the additional memory used by the model for things like the tokenizer, configuration settings, and other metadata. This overhead is typically small compared to the size of the weights and architecture, but it can still be significant for large models.</p>
+<p>Workspace</p>
+<p>Overhead</p>
+</section>
+<section id="further-reading" class="level2">
+<h2 class="anchored" data-anchor-id="further-reading">Further reading</h2>
+<!-- Link the vLLM docs/blog and 2-3 explainers you think are best. -->
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const toggle = window.document.createElement('button');
+      toggle.type = "button";
+      toggle.setAttribute("role", "switch");
+      toggle.setAttribute("aria-checked", "false");
+      toggle.classList.add('top-right');
+      toggle.classList.add('quarto-color-scheme-toggle');
+      toggle.setAttribute("aria-label", "Toggle dark mode");
+      toggle.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      toggle.appendChild(i);
+      // Put the toggle in a landmark of its own, so that landmark navigation
+      // can reach it.
+      //
+      // The container is always a fresh direct child of body, and the toggle is
+      // never moved into page furniture that the theme or the author controls.
+      // The toggle is positioned against the page, so any ancestor that
+      // establishes a containing block captures it: a positioned element or a
+      // grid for position: absolute, and transform, filter, will-change or
+      // contain for position: fixed. A direct child of body has none of these
+      // to inherit, and the shift when one appears is silent and visual.
+      //
+      // ARIA says a document should have at most one banner, and axe reports a
+      // duplicate whether or not the banners carry distinct labels. So use a
+      // header when the page has no banner yet, and a named region otherwise.
+      //
+      // A header is a banner wherever it sits, unless it is inside sectioning
+      // content, so this cannot just look at the children of body: a custom
+      // page layout wraps the title block header in a plain div. An explicit
+      // role="banner" always counts.
+      const sectioning = 'article, aside, main, nav, section, [role="article"], [role="complementary"], [role="main"], [role="navigation"], [role="region"]';
+      const hasBanner = Array.from(
+        window.document.querySelectorAll('header:not([role]), [role="banner"]')
+      ).some(function(el) {
+        return el.hasAttribute("role") || el.closest(sectioning) === null;
+      });
+      const container = window.document.createElement(hasBanner ? "div" : "header");
+      if (hasBanner) {
+        container.setAttribute("role", "region");
+        container.setAttribute("aria-label", "Toggle dark mode");
+      }
+      container.classList.add('quarto-color-scheme-toggle-container');
+      container.appendChild(toggle);
+      window.document.body.appendChild(container);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/sytu1927\.github\.io");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
